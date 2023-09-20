@@ -21,7 +21,7 @@ export const TodoWrapper = () => {
           })
           .catch((err) => {
             console.log(err);
-            return []; // Return an empty array on error
+            return []; 
           });
       }
       
@@ -62,17 +62,20 @@ export const TodoWrapper = () => {
         }
         
 
-    const toggleComplete = id => {
-        setTodos(todos.map(todo => todo.id === id ? { ...todo, completed: !todo.completed } : todo))
-        
-    }
+        const toggleComplete = id => {
+          const updatedTodos = todos.map(todo =>
+              todo.id === id ? { ...todo, completed: !todo.completed } : todo
+          );
+          setTodos(updatedTodos);
+          modifyTodos(updatedTodos);
+      }
     const deleteTodo = id => {
        const cleanTodos = todos.filter(todo => todo.id !== id)
          modifyTodos([cleanTodos]);
          setTodos(cleanTodos)
     }
 
-    // const itemsLeft = todos.filter(todo => !todo.completed).length;
+     const itemsLeft = todos.filter(todo => !todo.completed).length;
 
     return (<>
         <p className="title">Todos</p>
@@ -83,7 +86,7 @@ export const TodoWrapper = () => {
                 <Todo task={todo} key={index} toggleComplete={toggleComplete} deleteTodo={deleteTodo} />
             ))}
             <hr className="solid"></hr>
-            {/* <p className="items-left">{itemsLeft} {itemsLeft === 1 ? 'item' : 'items'} left</p> */}
+            <p className="items-left">{itemsLeft} {itemsLeft === 1 ? 'item' : 'items'} left</p>
         </div>
     </>
     )
