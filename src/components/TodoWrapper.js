@@ -8,30 +8,64 @@ export const TodoWrapper = () => {
 
 
     const URL = "https://playground.4geeks.com/apis/fake/todos/user/mpmiguel"
-    const getTodos = () => {
-        return fetch(URL)
-          .then((res) => {
-            if (!res.ok) {
-              throw Error();
-            }
-            return res.json();
-          })
-          .then((res) => {
-            return Array.isArray(res) ? res : []; // Ensure it's an array
-          })
-          .catch((err) => {
-            console.log(err);
-            return []; 
-          });
-      }
-      
 
+  
+    
+    const createUser = () => {
+      return fetch(URL, {
+        method: "POST",
+        body: JSON.stringify([]), // Initialize with an empty array of todos
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(resp => {
+          if (resp.ok) {
+            return resp.json();
+          } else {
+            throw new Error("Failed to create a user.");
+          }
+        })
+        .then(data => {
+          console.log("User created:", data);
+        })
+        .catch(error => {
+          console.error("Error creating user:", error);
+        });
+    };
+    
+  
+    const getTodos = () => {
+      return fetch(URL)
+        .then((res) => {
+          if (!res.ok) {
+            throw Error();
+          }
+          return res.json();
+        })
+        .then((res) => {
+          return Array.isArray(res) ? res : [];
+        })
+        .catch((err) => {
+          console.log(err);
+          return [];
+        });
+    };
+      
     useEffect(() => {
-        const llamarGetTodos = () => {
+      fetch(URL)
+      .then((res) => {
+        if (!res.ok) {
+          return createUser();
+        }
+      })
+      .then(() => {
         getTodos().then((data) => setTodos(data));
-        };
-        llamarGetTodos();
-      }, []);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
       const modifyTodos = async (todos) =>  
       { return fetch(URL, {
