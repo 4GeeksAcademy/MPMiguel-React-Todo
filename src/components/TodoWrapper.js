@@ -14,7 +14,7 @@ export const TodoWrapper = () => {
     const createUser = () => {
       return fetch(URL, {
         method: "POST",
-        body: JSON.stringify([]), // Initialize with an empty array of todos
+        body: JSON.stringify([]), 
         headers: {
           "Content-Type": "application/json"
         }
